@@ -7,7 +7,6 @@ import java.io.File
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
 
-
 data class PieDataSet(
     val label: String,
     val value: Double,
@@ -37,7 +36,7 @@ class PieChart {
         val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val g2: Graphics2D = image.createGraphics()
         // set up background
-        g2.color = Color.WHITE;
+        g2.color = Color.WHITE
         g2.fillRect(0, 0, width, height)
         // set up pie chart boundaries
         val pieWidth = (width * 0.9).roundToInt()
@@ -64,7 +63,7 @@ class PieChart {
     }
 
     private fun BufferedImage.toFile(directory: String, fileName: String) {
-        val file = File(directory, "/${fileName}.jpg")
+        val file = File(directory, "/$fileName.jpg")
         file.parentFile.mkdirs()
         file.writeBytes(ByteArray(0))
         ImageIO.write(this, "jpg", file)

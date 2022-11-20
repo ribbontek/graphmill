@@ -9,7 +9,6 @@ import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PieChartTest {
 
@@ -43,8 +42,7 @@ class PieChartTest {
         val imageBase = BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB)
         val g2: Graphics2D = imageBase.createGraphics()
         g2.setRenderingHint(
-            RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_ON
+            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON
         )
         g2.font = Font("Serif", Font.PLAIN, 24)
         g2.drawString("Welcome to TutorialsPoint", 50, 70)

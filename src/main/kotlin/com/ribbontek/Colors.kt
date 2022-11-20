@@ -23,5 +23,3 @@ enum class Colors(val color: Color) {
         }
     }
 }
-
-
