@@ -1,6 +1,5 @@
 package com.ribbontek
 
-import com.ribbontek.Graphmill.pieChart2d
 import com.ribbontek.chart.PieChart2d
 import com.ribbontek.style.Colors
 import com.ribbontek.util.PieDataSetFactory
@@ -22,7 +21,7 @@ class PieChart2dTest : AbstractChartTest() {
     }
 
     private fun createPieChart2d(): PieChart2d {
-        return pieChart2d {
+        return Graphmill.pieChart2d {
             title = "Pretty Colors"
             subtitle = "Generated with graphmill"
             width = 500

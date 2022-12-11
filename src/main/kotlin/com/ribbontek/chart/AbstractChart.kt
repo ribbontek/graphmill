@@ -43,19 +43,18 @@ abstract class AbstractChart {
         return image
     }
 
-    protected fun drawTextCentered(
-        g2: Graphics2D,
+    protected fun Graphics2D.drawTextCentered(
         width: Int,
         height: Int,
         text: String,
         size: Int,
         posY: Double
     ) {
-        g2.color = Color.BLACK
-        g2.font = Font("Serif", Font.PLAIN, size)
+        color = Color.BLACK
+        font = Font("Serif", Font.PLAIN, size)
         val centeredWidth = width - (width * 0.5).roundToInt()
-        val halfFontWidth = g2.getFontMetrics(g2.font).stringWidth(text) / 2
-        g2.drawString(
+        val halfFontWidth = getFontMetrics(font).stringWidth(text) / 2
+        drawString(
             text,
             centeredWidth - halfFontWidth,
             height - (height * posY).roundToInt()

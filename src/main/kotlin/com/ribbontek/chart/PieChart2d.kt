@@ -49,11 +49,11 @@ class PieChart2d : AbstractChart() {
         }
         // draw title
         title?.takeIf { it.isNotBlank() }?.let {
-            drawTextCentered(g2, width, height, it, 24, 0.95)
+            g2.drawTextCentered(width, height, it, 24, 0.95)
         }
         // draw subtitle
         subtitle?.takeIf { it.isNotBlank() }?.let {
-            drawTextCentered(g2, width, height, it, 12, 0.90)
+            g2.drawTextCentered(width, height, it, 12, 0.90)
         }
 
         return image
