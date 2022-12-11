@@ -1,15 +1,13 @@
 package com.ribbontek
 
+import com.ribbontek.Graphmill.pieChart2d
+import com.ribbontek.chart.PieChart2d
 import com.ribbontek.style.Colors
 import com.ribbontek.util.PieDataSetFactory
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class PieChart2dTest {
-
-    companion object {
-        private const val BUILD_DIR = "build/charts"
-    }
+class PieChart2dTest : AbstractChartTest() {
 
     @Test
     fun `pie chart - success`() {

@@ -1,4 +1,4 @@
-package com.ribbontek
+package com.ribbontek.chart
 
 import com.ribbontek.style.Colors
 import java.awt.Color
@@ -13,10 +13,6 @@ data class PieDataSet(
     val value: Double,
     val color: String
 )
-
-fun pieChart2d(instance: PieChart2d.() -> Unit): PieChart2d {
-    return PieChart2d().apply { instance(this) }
-}
 
 class PieChart2d : AbstractChart() {
     var width: Int = -1

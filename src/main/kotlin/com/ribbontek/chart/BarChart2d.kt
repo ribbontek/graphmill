@@ -1,4 +1,4 @@
-package com.ribbontek
+package com.ribbontek.chart
 
 import com.ribbontek.style.Colors
 import java.awt.BasicStroke
@@ -15,10 +15,6 @@ data class BarDataSet(
     val value: Double,
     val color: String
 )
-
-fun barChart2d(instance: BarChart2d.() -> Unit): BarChart2d {
-    return BarChart2d().apply { instance(this) }
-}
 
 enum class DataSetRepresentation {
     TENS, HUNDREDS, THOUSANDS, TENS_OF_THOUSANDS

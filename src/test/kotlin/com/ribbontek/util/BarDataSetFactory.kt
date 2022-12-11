@@ -1,6 +1,6 @@
 package com.ribbontek.util
 
-import com.ribbontek.BarDataSet
+import com.ribbontek.chart.BarDataSet
 import com.ribbontek.style.Colors
 
 object BarDataSetFactory {

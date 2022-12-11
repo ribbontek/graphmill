@@ -1,15 +1,12 @@
 package com.ribbontek
 
+import com.ribbontek.chart.BarChart2d
 import com.ribbontek.style.Colors
 import com.ribbontek.util.BarDataSetFactory
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class BarChart2dTest {
-
-    companion object {
-        private const val BUILD_DIR = "build/charts"
-    }
+class BarChart2dTest : AbstractChartTest() {
 
     @Test
     fun `bar chart - success`() {
@@ -24,7 +21,7 @@ class BarChart2dTest {
     }
 
     private fun createBarChart2d(): BarChart2d {
-        return barChart2d {
+        return Graphmill.barChart2d {
             title = "Pretty Colors"
             subtitle = "Generated with graphmill"
             width = 500

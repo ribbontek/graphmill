@@ -1,5 +1,6 @@
 package com.ribbontek
 
+import com.ribbontek.chart.AbstractChart
 import org.junit.jupiter.api.Test
 import java.awt.Color
 import java.awt.Polygon
@@ -10,11 +11,7 @@ import java.awt.image.BufferedImage
  * Little experiment found here:
  * https://stackoverflow.com/questions/4263103/draw-3d-house-using-java2d
  */
-class HouseTest {
-
-    companion object {
-        private const val BUILD_DIR = "build/charts"
-    }
+class HouseTest : AbstractChartTest() {
 
     @Test
     fun `build house`() {

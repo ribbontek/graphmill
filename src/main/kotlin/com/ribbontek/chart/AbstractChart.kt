@@ -1,9 +1,10 @@
-package com.ribbontek
+package com.ribbontek.chart
 
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
@@ -11,6 +12,12 @@ import kotlin.math.roundToInt
 abstract class AbstractChart {
 
     protected abstract fun render(): BufferedImage
+
+    fun renderToByteArray(): ByteArray {
+        val baos = ByteArrayOutputStream()
+        ImageIO.write(render(), "jpg", baos)
+        return baos.toByteArray()
+    }
 
     fun renderToFile(
         directory: String = "",
