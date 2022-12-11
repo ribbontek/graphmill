@@ -62,9 +62,32 @@ tasks {
         delete(fileTree(".git/hooks/"))
     }
 
+    register("versionFile") {
+        doLast {
+            mkdir("${project.buildDir}/version")
+            file("${project.buildDir}/version/version").writeText(scmVersion.version)
+            project.version = scmVersion.version
+        }
+    }
+
     afterEvaluate {
         tasks["clean"].dependsOn(tasks.named("installGitHooks"))
+        tasks["build"].dependsOn(tasks.named("versionFile"))
     }
 }
 
-// TODO: Add in axion scm here
+scmVersion {
+    tag {
+        // if no tags exists, this sets the starting position
+        initialVersion { _, _ -> "1.0.0" }
+    }
+    // Use minor, not patch by default. e.g. 1.0.0 -> 1.1.0
+    versionIncrementer("incrementMinor")
+    // Adds branch names to snapshots. e.g. 1.0.0-feature-SW-000-exion-release-plugin-SNAPSHOT
+    branchVersionCreator.putAll(
+        mapOf(
+            "feature/.*" to "versionWithBranch",
+            "hotfix/.*" to "versionWithBranch"
+        )
+    )
+}
