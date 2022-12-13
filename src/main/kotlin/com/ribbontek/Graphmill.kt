@@ -1,6 +1,7 @@
 package com.ribbontek
 
 import com.ribbontek.chart.BarChart2d
+import com.ribbontek.chart.LineChart2d
 import com.ribbontek.chart.PieChart2d
 
 object Graphmill {
@@ -11,5 +12,9 @@ object Graphmill {
 
     fun pieChart2d(instance: PieChart2d.() -> Unit): PieChart2d {
         return PieChart2d().apply { instance(this) }
+    }
+
+    fun lineChart2d(instance: LineChart2d.() -> Unit): LineChart2d {
+        return LineChart2d().apply { instance(this) }
     }
 }

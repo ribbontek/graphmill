@@ -1,6 +1,7 @@
 package com.ribbontek.chart
 
 import com.ribbontek.style.Colors
+import com.ribbontek.util.countDigits
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Font
@@ -9,9 +10,7 @@ import java.awt.Rectangle
 import java.awt.RenderingHints
 import java.awt.geom.Line2D
 import java.awt.image.BufferedImage
-import kotlin.math.abs
 import kotlin.math.ceil
-import kotlin.math.log10
 import kotlin.math.roundToInt
 
 data class BarDataSet(
@@ -38,7 +37,7 @@ class BarChart2d(
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON)
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY)
-
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE)
         // draw bar chart
         val barChartHeight = (height * 0.7).roundToInt()
         val barChartWidth = (width * 0.7).roundToInt()
@@ -50,9 +49,9 @@ class BarChart2d(
         val number = "1" + (1 until maxValue.roundToInt().countDigits()).joinToString("") { "0" }
         val highestNumber = ceil((maxValue / number.toDouble())).roundToInt() * number.toInt()
 
-        var current = marginWidth
         val padding = 12
-        val totalPadding = 12 * (dataSet.size - 1)
+        var current = marginWidth + padding
+        val totalPadding = padding * dataSet.size
         val barWidth = (barChartWidth - totalPadding) / dataSet.size
 
         dataSet.forEach {
@@ -102,11 +101,10 @@ class BarChart2d(
                 current + boxWidth + (padding / 2),
                 height - marginHeight + linePosition + boxHeight
             )
-            if (current >= (width * 0.7).roundToInt()) {
+            current += boxWidth + stringWidth + padding
+            if (current >= (width * 0.8).roundToInt()) {
                 current = marginWidth - (marginWidth / 2)
                 linePosition += 16
-            } else {
-                current += boxWidth + stringWidth + padding
             }
         }
     }
@@ -168,15 +166,10 @@ class BarChart2d(
         )
     }
 
-    data class SideBarDisplay(
+    private data class SideBarDisplay(
         val numberOfSegments: Int,
         val segmentStep: Int
     )
-
-    private fun Int.countDigits() = when (this) {
-        0 -> 1
-        else -> log10(abs(toDouble())).toInt() + 1
-    }
 
     private fun validate() {
         assert(width > 0) { "Width for ${this::class.simpleName} must be greater than 0" }

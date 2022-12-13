@@ -26,6 +26,7 @@ class PieChart2dTest : AbstractChartTest() {
             subtitle = "Generated with graphmill"
             width = 500
             height = 500
+            displayOutline = true
             dataSet = listOf(
                 PieDataSetFactory.pieDataSet(color = Colors.RED.toString()),
                 PieDataSetFactory.pieDataSet(color = Colors.PINK.toString()),

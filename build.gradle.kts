@@ -19,7 +19,9 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     testImplementation(kotlin("test"))
-    testImplementation("com.github.javafaker:javafaker:1.0.2")
+    testImplementation("com.github.javafaker:javafaker:1.0.2") {
+        exclude("org.yaml", "snakeyaml")
+    }
 }
 
 tasks.test {
