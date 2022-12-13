@@ -7,6 +7,7 @@ import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.RenderingHints
+import java.awt.geom.Ellipse2D
 import java.awt.geom.Line2D
 import java.awt.image.BufferedImage
 import kotlin.math.abs
@@ -136,18 +137,35 @@ class ScatterChart2d(
                 (marginHeight + scatterChartHeight - movement.toInt()) + (fontMetrics.height / 4)
             )
         }
+        // EXAMPLE ZERO POSITION DOT
+        color = Color.GREEN
+        fill(
+            Ellipse2D.Double(
+                marginWidth.toDouble() - 1.5,
+                height - marginHeight.toDouble() - 1.5,
+                3.0,
+                3.0
+            )
+        )
+        // TODO: FINISH TEST DOT FOR RUNNING THE POSITION CALCULATIONS
+        val testCoordinate = ScatterDataSet.Coordinate(x = -20.25, y = -54.67)
+        val xRange = segmentDisplay.xNumbers.max() - segmentDisplay.xNumbers.min()
+        val yRange = segmentDisplay.yNumbers.max() - segmentDisplay.yNumbers.min()
 
+        val xPos = ceil((abs(testCoordinate.x) / xRange) * scatterChartWidth).roundToInt()
+        val yPos = ceil((abs(testCoordinate.y) / yRange) * scatterChartHeight).roundToInt()
+        val ellipse = Ellipse2D.Double(
+            marginWidth.toDouble() - 1.5 + xPos,
+            height - marginHeight.toDouble() - 1.5 - yPos,
+            3.0,
+            3.0
+        )
+        fill(ellipse)
         dataSet.forEach { scatterSet ->
             scatterSet.data.forEach {
                 // TODO: calculate the x & y position in the graph
                 color = Colors.getColor(scatterSet.color)
-//                val ellipse = Ellipse2D.Double(
-//                    current - 1.5,
-//                    ((height - marginHeight) - lineHeight) - 1.5,
-//                    3.0,
-//                    3.0
-//                )
-//                g2.fill(ellipse)
+                println(it)
             }
         }
     }
