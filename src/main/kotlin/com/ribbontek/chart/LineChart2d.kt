@@ -17,19 +17,20 @@ data class LineDataSet(
     val label: String,
     val values: List<Double>,
     val color: String
-)
+) : DataSet
 
 class LineChart2d(
-    var width: Int = -1,
-    var height: Int = -1,
+    override var width: Int = -1,
+    override var height: Int = -1,
+    override var dataSet: List<LineDataSet> = emptyList(),
     var labels: List<String> = emptyList(),
-    var dataSet: List<LineDataSet> = emptyList(),
     var backgroundColor: Color = Color.WHITE,
     var title: String? = null,
     var subtitle: String? = null
-) : AbstractChart() {
+) : AbstractChart<LineDataSet>() {
+
     override fun render(): BufferedImage {
-        // validate bar chart data
+        // validate line chart data
         validate()
         // set up image
         val image = setUpImage(width, height, backgroundColor)
@@ -53,10 +54,11 @@ class LineChart2d(
         val totalPadding = padding * labels.size
         val barWidth = (lineChartWidth - totalPadding) / labels.size
 
+        g2.stroke = BasicStroke(1f)
         dataSet.forEach { line ->
+            g2.color = Colors.getColor(line.color)
             var current = marginWidth + padding
             line.values.take(labels.size).forEachIndexed { index, data ->
-                g2.color = Colors.getColor(line.color)
                 val lineHeight = ceil((data / highestNumber) * lineChartHeight).roundToInt()
                 if (line.values.size > index + 1 && labels.size > index + 1) {
                     val futureX = current + barWidth + padding
@@ -188,10 +190,8 @@ class LineChart2d(
         val segmentStep: Int
     )
 
-    private fun validate() {
-        assert(width > 0) { "Width for ${this::class.simpleName} must be greater than 0" }
-        assert(height > 0) { "Height for ${this::class.simpleName} must be greater than 0" }
-        assert(dataSet.isNotEmpty()) { "Data Set for ${this::class.simpleName} must not be empty" }
+    override fun validate() {
+        super.validate()
         assert(labels.isNotEmpty()) { "Labels for ${this::class.simpleName} must not be empty" }
     }
 }

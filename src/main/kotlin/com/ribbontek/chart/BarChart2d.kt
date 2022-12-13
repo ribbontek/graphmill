@@ -17,16 +17,16 @@ data class BarDataSet(
     val label: String,
     val value: Double,
     val color: String
-)
+) : DataSet
 
 class BarChart2d(
-    var width: Int = -1,
-    var height: Int = -1,
-    var dataSet: List<BarDataSet> = emptyList(),
+    override var width: Int = -1,
+    override var height: Int = -1,
+    override var dataSet: List<BarDataSet> = emptyList(),
     var backgroundColor: Color = Color.WHITE,
     var title: String? = null,
     var subtitle: String? = null
-) : AbstractChart() {
+) : AbstractChart<BarDataSet>() {
 
     override fun render(): BufferedImage {
         // validate bar chart data
@@ -170,10 +170,4 @@ class BarChart2d(
         val numberOfSegments: Int,
         val segmentStep: Int
     )
-
-    private fun validate() {
-        assert(width > 0) { "Width for ${this::class.simpleName} must be greater than 0" }
-        assert(height > 0) { "Height for ${this::class.simpleName} must be greater than 0" }
-        assert(dataSet.isNotEmpty()) { "Data Set for ${this::class.simpleName} must not be empty" }
-    }
 }

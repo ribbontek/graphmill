@@ -16,17 +16,17 @@ data class PieDataSet(
     val label: String,
     val value: Double,
     val color: String
-)
+) : DataSet
 
 class PieChart2d(
-    var width: Int = -1,
-    var height: Int = -1,
-    var dataSet: List<PieDataSet> = emptyList(),
+    override var width: Int = -1,
+    override var height: Int = -1,
+    override var dataSet: List<PieDataSet> = emptyList(),
     var backgroundColor: Color = Color.WHITE,
     var title: String? = null,
     var subtitle: String? = null,
     var displayOutline: Boolean = false
-) : AbstractChart() {
+) : AbstractChart<PieDataSet>() {
 
     override fun render(): BufferedImage {
         // validate pie chart data
@@ -113,11 +113,5 @@ class PieChart2d(
                 linePosition += 16
             }
         }
-    }
-
-    private fun validate() {
-        assert(width > 0) { "Width for ${this::class.simpleName} must be greater than 0" }
-        assert(height > 0) { "Height for ${this::class.simpleName} must be greater than 0" }
-        assert(dataSet.isNotEmpty()) { "Data Set for ${this::class.simpleName} must not be empty" }
     }
 }

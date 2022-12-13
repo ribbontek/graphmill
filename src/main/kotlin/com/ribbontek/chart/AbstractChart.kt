@@ -9,7 +9,17 @@ import java.io.File
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
 
-abstract class AbstractChart {
+interface DataSet
+
+interface ChartValidator {
+    fun validate()
+}
+
+abstract class AbstractChart<T : DataSet> : ChartValidator {
+
+    abstract var width: Int
+    abstract var height: Int
+    abstract var dataSet: List<T>
 
     protected abstract fun render(): BufferedImage
 
@@ -59,5 +69,11 @@ abstract class AbstractChart {
             centeredWidth - halfFontWidth,
             height - (height * posY).roundToInt()
         )
+    }
+
+    override fun validate() {
+        assert(width > 0) { "Width for ${this::class.simpleName} must be greater than 0" }
+        assert(height > 0) { "Height for ${this::class.simpleName} must be greater than 0" }
+        assert(dataSet.isNotEmpty()) { "Data Set for ${this::class.simpleName} must not be empty" }
     }
 }
