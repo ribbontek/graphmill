@@ -1,8 +1,11 @@
 package com.ribbontek.chart
 
 import com.ribbontek.style.Colors
+import java.awt.BasicStroke
 import java.awt.Color
+import java.awt.Font
 import java.awt.Graphics2D
+import java.awt.Rectangle
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import kotlin.math.ceil
@@ -14,13 +17,14 @@ data class PieDataSet(
     val color: String
 )
 
-class PieChart2d : AbstractChart() {
-    var width: Int = -1
-    var height: Int = -1
-    var dataSet: List<PieDataSet> = emptyList()
-    var backgroundColor: Color = Color.WHITE
-    var title: String? = null
+class PieChart2d(
+    var width: Int = -1,
+    var height: Int = -1,
+    var dataSet: List<PieDataSet> = emptyList(),
+    var backgroundColor: Color = Color.WHITE,
+    var title: String? = null,
     var subtitle: String? = null
+) : AbstractChart() {
 
     override fun render(): BufferedImage {
         // validate pie chart data
@@ -47,6 +51,8 @@ class PieChart2d : AbstractChart() {
             g2.fillArc(pieX, pieY, pieWidth, pieHeight, startAngle, arcAngle)
             currentValue += it.value
         }
+        // draw bottom chart legend
+        g2.drawLegend(pieX, pieY)
         // draw title
         title?.takeIf { it.isNotBlank() }?.let {
             g2.drawTextCentered(width, height, it, 24, 0.95)
@@ -57,6 +63,39 @@ class PieChart2d : AbstractChart() {
         }
 
         return image
+    }
+
+    private fun Graphics2D.drawLegend(marginWidth: Int, marginHeight: Int) {
+        stroke = BasicStroke(1f)
+        val fontSize = 10
+        val boxWidth = 12
+        val boxHeight = 12
+        val padding = 12
+        var current = marginWidth - (marginWidth / 2)
+        var linePosition = 16
+        dataSet.forEach {
+            color = Colors.getColor(it.color)
+            val rect = Rectangle(current, height - marginHeight + linePosition, boxWidth, boxHeight)
+            fill(rect)
+
+            color = Color.BLACK
+            font = Font("Serif", Font.PLAIN, fontSize)
+            val text = if (it.label.length > 20)
+                it.label.substring(0, 19) + "..."
+            else it.label
+            val stringWidth = getFontMetrics(font).stringWidth(text)
+            drawString(
+                text,
+                current + boxWidth + (padding / 2),
+                height - marginHeight + linePosition + boxHeight
+            )
+            if (current >= (width * 0.7).roundToInt()) {
+                current = marginWidth - (marginWidth / 2)
+                linePosition += 16
+            } else {
+                current += boxWidth + stringWidth + padding
+            }
+        }
     }
 
     private fun validate() {

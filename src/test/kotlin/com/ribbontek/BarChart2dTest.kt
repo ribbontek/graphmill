@@ -31,7 +31,10 @@ class BarChart2dTest : AbstractChartTest() {
                 BarDataSetFactory.barDataSet(color = Colors.PINK.toString()),
                 BarDataSetFactory.barDataSet(color = Colors.ORANGE.toString()),
                 BarDataSetFactory.barDataSet(color = Colors.YELLOW.toString()),
-                BarDataSetFactory.barDataSet(color = Colors.GREEN.toString())
+                BarDataSetFactory.barDataSet(color = Colors.GREEN.toString()),
+                BarDataSetFactory.barDataSet(color = Colors.BLUE.toString()),
+                BarDataSetFactory.barDataSet(color = Colors.CYAN.toString()),
+                BarDataSetFactory.barDataSet(color = Colors.MAGENTA.toString()),
             )
         }
     }

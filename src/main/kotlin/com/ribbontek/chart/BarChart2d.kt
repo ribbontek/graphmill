@@ -20,13 +20,14 @@ data class BarDataSet(
     val color: String
 )
 
-class BarChart2d : AbstractChart() {
-    var width: Int = -1
-    var height: Int = -1
-    var dataSet: List<BarDataSet> = emptyList()
-    var backgroundColor: Color = Color.WHITE
-    var title: String? = null
+class BarChart2d(
+    var width: Int = -1,
+    var height: Int = -1,
+    var dataSet: List<BarDataSet> = emptyList(),
+    var backgroundColor: Color = Color.WHITE,
+    var title: String? = null,
     var subtitle: String? = null
+) : AbstractChart() {
 
     override fun render(): BufferedImage {
         // validate bar chart data
@@ -46,8 +47,7 @@ class BarChart2d : AbstractChart() {
 
         // calculate the highest value
         val maxValue = dataSet.maxOf { it.value }
-        val maxDigits = maxValue.roundToInt().countDigits()
-        val number = "1" + (1 until maxDigits).joinToString("") { "0" }
+        val number = "1" + (1 until maxValue.roundToInt().countDigits()).joinToString("") { "0" }
         val highestNumber = ceil((maxValue / number.toDouble())).roundToInt() * number.toInt()
 
         var current = marginWidth
@@ -64,7 +64,8 @@ class BarChart2d : AbstractChart() {
         }
         // draw bar chart measurement lines
         g2.drawXyAxis(marginWidth, marginHeight, barChartWidth, barChartHeight)
-
+        // draw bottom chart legend
+        g2.drawLegend(marginWidth, marginHeight)
         // draw title
         title?.takeIf { it.isNotBlank() }?.let {
             g2.drawTextCentered(width, height, it, 24, 0.95)
@@ -75,6 +76,39 @@ class BarChart2d : AbstractChart() {
         }
 
         return image
+    }
+
+    private fun Graphics2D.drawLegend(marginWidth: Int, marginHeight: Int) {
+        stroke = BasicStroke(1f)
+        val fontSize = 10
+        val boxWidth = 12
+        val boxHeight = 12
+        val padding = 12
+        var current = marginWidth - (marginWidth / 2)
+        var linePosition = 16
+        dataSet.forEach {
+            color = Colors.getColor(it.color)
+            val rect = Rectangle(current, height - marginHeight + linePosition, boxWidth, boxHeight)
+            fill(rect)
+
+            color = Color.BLACK
+            font = Font("Serif", Font.PLAIN, fontSize)
+            val text = if (it.label.length > 20)
+                it.label.substring(0, 19) + "..."
+            else it.label
+            val stringWidth = getFontMetrics(font).stringWidth(text)
+            drawString(
+                text,
+                current + boxWidth + (padding / 2),
+                height - marginHeight + linePosition + boxHeight
+            )
+            if (current >= (width * 0.7).roundToInt()) {
+                current = marginWidth - (marginWidth / 2)
+                linePosition += 16
+            } else {
+                current += boxWidth + stringWidth + padding
+            }
+        }
     }
 
     private fun Graphics2D.drawXyAxis(marginWidth: Int, marginHeight: Int, barChartWidth: Int, barChartHeight: Int) {
@@ -117,7 +151,7 @@ class BarChart2d : AbstractChart() {
             val text = "%,d".format(position * sideBarDisplay.segmentStep)
             val fontMetrics = getFontMetrics(font)
             drawString(
-                "%,d".format(position * sideBarDisplay.segmentStep),
+                text,
                 marginWidth - 10 - fontMetrics.stringWidth(text),
                 (marginHeight + barChartHeight - movement) + (fontMetrics.height / 4)
             )
@@ -125,32 +159,16 @@ class BarChart2d : AbstractChart() {
     }
 
     private fun sideBarDisplay(): SideBarDisplay {
-        val sortedDataset = dataSet.map { it.value }.sorted()
-        val average = sortedDataset.mapIndexedNotNull { index, data ->
-            if (sortedDataset.size != index + 1) sortedDataset[index + 1] - data else null
-        }.average().roundToInt()
-        val averageDigits = average.countDigits()
         val maxNumber = dataSet.maxOf { it.value }
-        val maxDigits = maxNumber.roundToInt().countDigits()
-        val number = "1" + (1 until maxDigits).joinToString("") { "0" }
+        val number = "1" + (1 until maxNumber.roundToInt().countDigits()).joinToString("") { "0" }
         val highestNumber = ceil((maxNumber / number.toDouble())).roundToInt() * number.toInt()
         return SideBarDisplay(
-            digits = averageDigits,
-            maxDigits = maxDigits,
-            average = average,
-            maxNumber = maxNumber.roundToInt(),
-            highestNumber = highestNumber,
             segmentStep = number.toInt(),
             numberOfSegments = highestNumber / number.toInt()
         )
     }
 
     data class SideBarDisplay(
-        val digits: Int,
-        val maxDigits: Int,
-        val average: Int,
-        val maxNumber: Int,
-        val highestNumber: Int,
         val numberOfSegments: Int,
         val segmentStep: Int
     )
