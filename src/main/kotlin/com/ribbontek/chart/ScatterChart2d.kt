@@ -179,7 +179,7 @@ class ScatterChart2d(
 
         // TODO: FIX UP POSITIONING SYSTEM HERE - NOT ACCURATE
         dataSet.forEach { scatterSet ->
-            scatterSet.data.filter { it.y > 90 || it.x > 90 }.forEach {
+            scatterSet.data.forEach {
                 color = Colors.getColor(scatterSet.color)
 
                 println(it)
