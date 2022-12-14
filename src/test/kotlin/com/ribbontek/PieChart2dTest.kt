@@ -9,23 +9,28 @@ import org.junit.jupiter.api.assertThrows
 class PieChart2dTest : AbstractChartTest() {
 
     @Test
-    fun `pie chart - success`() {
-        createPieChart2d().renderToFile(BUILD_DIR)
+    fun `render pie chart to file (500x500) - success`() {
+        createPieChart2d(500, 500).renderToFile(BUILD_DIR)
     }
 
     @Test
-    fun `pie chart - fail`() {
+    fun `render pie chart to file (1000x1000) - success`() {
+        createPieChart2d(1000, 1000).renderToFile(BUILD_DIR)
+    }
+
+    @Test
+    fun `render pie chart to file - fail`() {
         assertThrows<AssertionError> {
             PieChart2d().renderToFile(BUILD_DIR)
         }
     }
 
-    private fun createPieChart2d(): PieChart2d {
+    private fun createPieChart2d(width: Int, height: Int): PieChart2d {
         return Graphmill.pieChart2d {
             title = "Pretty Colors"
             subtitle = "Generated with graphmill"
-            width = 500
-            height = 500
+            this.width = width
+            this.height = height
             displayOutline = true
             dataSet = listOf(
                 PieDataSetFactory.pieDataSet(color = Colors.RED.toString()),

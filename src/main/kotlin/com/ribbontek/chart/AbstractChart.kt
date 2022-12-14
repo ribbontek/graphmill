@@ -3,6 +3,9 @@ package com.ribbontek.chart
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
+import java.awt.GraphicsConfiguration
+import java.awt.GraphicsEnvironment
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -36,11 +39,33 @@ abstract class AbstractChart<T : DataSet> : ChartValidator {
         render().toFile(directory, fileName)
     }
 
+    fun renderToFileGpuEnhanced(
+        directory: String = "",
+        fileName: String = System.currentTimeMillis().toString()
+    ) {
+        render().toFileGpuEnhanced(directory, fileName)
+    }
+
     private fun BufferedImage.toFile(directory: String, fileName: String) {
         val file = File(directory, "/$fileName.jpg")
         file.parentFile.mkdirs()
         file.writeBytes(ByteArray(0))
         ImageIO.write(this, "jpg", file)
+    }
+
+    // TODO: Look at using this method for enhancing performance & quality inside the actual chart code
+    private fun BufferedImage.toFileGpuEnhanced(directory: String, fileName: String) {
+        val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
+        val gc: GraphicsConfiguration = ge.defaultScreenDevice.defaultConfiguration
+        val vImage = gc.createCompatibleVolatileImage(width, height)
+        val g2 = vImage.createGraphics()
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON)
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY)
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE)
+        g2.drawImage(this, null, 0, 0)
+        g2.scale(0.1, 0.1)
+        vImage.snapshot.toFile(directory, fileName)
     }
 
     protected fun setUpImage(width: Int, height: Int, backgroundColor: Color): BufferedImage {

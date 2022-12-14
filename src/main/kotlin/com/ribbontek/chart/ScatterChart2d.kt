@@ -32,7 +32,8 @@ class ScatterChart2d(
     override var dataSet: List<ScatterDataSet> = emptyList(),
     var backgroundColor: Color = Color.WHITE,
     var title: String? = null,
-    var subtitle: String? = null
+    var subtitle: String? = null,
+    var includeGrid: Boolean = true
 ) : AbstractChart<ScatterDataSet>() {
 
     override fun render(): BufferedImage {
@@ -95,8 +96,9 @@ class ScatterChart2d(
         val segmentDisplay = segmentDisplay()
         segmentDisplay.xNumbers.forEachIndexed { index, data ->
             // move x position - horizontal (BOTTOM)
+            color = Color.BLACK
             stroke = BasicStroke(1f)
-            val movement = ceil((scatterChartWidth / segmentDisplay.xNumbers.size + 1.5) * index.toDouble())
+            val movement = (scatterChartWidth / segmentDisplay.xNumbers.size) * (index + 1).toDouble()
             draw(
                 Line2D.Double(
                     marginWidth + movement,
@@ -105,7 +107,19 @@ class ScatterChart2d(
                     (marginHeight + scatterChartWidth) + 6.0,
                 )
             )
+            if (includeGrid) {
+                color = Color.LIGHT_GRAY
+                draw(
+                    Line2D.Double(
+                        marginWidth + movement,
+                        marginHeight.toDouble(),
+                        marginWidth + movement,
+                        (marginHeight + scatterChartHeight).toDouble()
+                    )
+                )
+            }
 
+            color = Color.BLACK
             font = Font("Serif", Font.PLAIN, 6)
             val text = "%,d".format(data)
             val fontMetrics = getFontMetrics(font)
@@ -117,8 +131,9 @@ class ScatterChart2d(
         }
         segmentDisplay.yNumbers.forEachIndexed { index, data ->
             // move y position - vertical (LEFT)
+            color = Color.BLACK
             stroke = BasicStroke(1f)
-            val movement = (scatterChartHeight / segmentDisplay.yNumbers.size + 1.5) * index
+            val movement = (scatterChartHeight / segmentDisplay.yNumbers.size) * (index + 1).toDouble()
             draw(
                 Line2D.Double(
                     marginWidth.toDouble(),
@@ -127,7 +142,19 @@ class ScatterChart2d(
                     (marginHeight + scatterChartHeight).toDouble() - movement
                 )
             )
+            if (includeGrid) {
+                color = Color.LIGHT_GRAY
+                draw(
+                    Line2D.Double(
+                        marginWidth.toDouble(),
+                        (marginHeight + scatterChartHeight).toDouble() - movement,
+                        (marginWidth + scatterChartWidth).toDouble(),
+                        (marginHeight + scatterChartHeight).toDouble() - movement
+                    )
+                )
+            }
 
+            color = Color.BLACK
             font = Font("Serif", Font.PLAIN, 6)
             val text = "%,d".format(data)
             val fontMetrics = getFontMetrics(font)
@@ -137,35 +164,38 @@ class ScatterChart2d(
                 (marginHeight + scatterChartHeight - movement.toInt()) + (fontMetrics.height / 4)
             )
         }
-        // EXAMPLE ZERO POSITION DOT
-        color = Color.GREEN
-        fill(
-            Ellipse2D.Double(
-                marginWidth.toDouble() - 1.5,
-                height - marginHeight.toDouble() - 1.5,
-                3.0,
-                3.0
-            )
-        )
-        // TODO: FINISH TEST DOT FOR RUNNING THE POSITION CALCULATIONS
-        val testCoordinate = ScatterDataSet.Coordinate(x = -20.25, y = -54.67)
+
         val xRange = segmentDisplay.xNumbers.max() - segmentDisplay.xNumbers.min()
         val yRange = segmentDisplay.yNumbers.max() - segmentDisplay.yNumbers.min()
+        val xPosZeroIndex = segmentDisplay.xNumbers.indexOf(0) + 1
+        val yPosZeroIndex = segmentDisplay.yNumbers.indexOf(0) + 1
+        val xZeroStart = marginWidth + ((scatterChartWidth / segmentDisplay.xNumbers.size) * xPosZeroIndex)
+        val yZeroStart = marginHeight + scatterChartHeight -
+            ((scatterChartHeight / segmentDisplay.yNumbers.size) * yPosZeroIndex)
 
-        val xPos = ceil((abs(testCoordinate.x) / xRange) * scatterChartWidth).roundToInt()
-        val yPos = ceil((abs(testCoordinate.y) / yRange) * scatterChartHeight).roundToInt()
-        val ellipse = Ellipse2D.Double(
-            marginWidth.toDouble() - 1.5 + xPos,
-            height - marginHeight.toDouble() - 1.5 - yPos,
-            3.0,
-            3.0
-        )
-        fill(ellipse)
+        // EXAMPLE ZERO POSITION DOT
+        color = Color.BLUE
+        fill(Ellipse2D.Double(xZeroStart.toDouble() - 1.5, yZeroStart.toDouble() - 1.5, 3.0, 3.0))
+
+        // TODO: FIX UP POSITIONING SYSTEM HERE - NOT ACCURATE
         dataSet.forEach { scatterSet ->
-            scatterSet.data.forEach {
-                // TODO: calculate the x & y position in the graph
+            scatterSet.data.filter { it.y > 90 || it.x > 90 }.forEach {
                 color = Colors.getColor(scatterSet.color)
+
                 println(it)
+                val xPos = if (it.x < 0) floor((it.x / xRange) * scatterChartWidth).roundToInt()
+                else ceil((it.x / xRange) * scatterChartWidth).roundToInt()
+                val yPos = if (it.y < 0) floor((it.y / yRange) * scatterChartHeight).roundToInt()
+                else ceil((it.y / yRange) * scatterChartHeight).roundToInt()
+                println("xPos: $xPos yPos: $yPos")
+
+                val ellipse = Ellipse2D.Double(
+                    xZeroStart.toDouble() + xPos,
+                    yZeroStart.toDouble() - yPos,
+                    3.0,
+                    3.0
+                )
+                fill(ellipse)
             }
         }
     }

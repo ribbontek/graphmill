@@ -12,12 +12,12 @@ import java.util.Locale
 class LineChart2dTest : AbstractChartTest() {
 
     @Test
-    fun `line chart - success`() {
+    fun `render line chart to file - success`() {
         createLineChart2d().renderToFile(BUILD_DIR)
     }
 
     @Test
-    fun `line chart - fail`() {
+    fun `render line chart to file - fail`() {
         assertThrows<AssertionError> {
             LineChart2d().renderToFile(BUILD_DIR)
         }

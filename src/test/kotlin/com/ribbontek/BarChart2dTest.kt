@@ -9,12 +9,12 @@ import org.junit.jupiter.api.assertThrows
 class BarChart2dTest : AbstractChartTest() {
 
     @Test
-    fun `bar chart - success`() {
+    fun `render bar chart to file - success`() {
         createBarChart2d().renderToFile(BUILD_DIR)
     }
 
     @Test
-    fun `bar chart - fail`() {
+    fun `render bar chart to file - fail`() {
         assertThrows<AssertionError> {
             BarChart2d().renderToFile(BUILD_DIR)
         }
