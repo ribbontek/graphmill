@@ -1,7 +1,6 @@
 package com.ribbontek.util
 
 import com.ribbontek.chart.PieDataSet
-import com.ribbontek.style.Colors
 
 object PieDataSetFactory {
     fun pieDataSet(

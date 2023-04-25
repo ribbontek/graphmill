@@ -9,7 +9,6 @@ plugins {
 }
 
 group = "com.ribbontek"
-version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -83,9 +82,11 @@ scmVersion {
         // if no tags exists, this sets the starting position
         initialVersion { _, _ -> "1.0.0" }
     }
+    // Example options to pass-through: incrementPatch, incrementMinor, incrementMajor (PredefinedVersionIncrementer)
+    val incrementer: String = project.findProperty("VERSION_INCREMENTER")?.toString() ?: "incrementMinor"
     // Use minor, not patch by default. e.g. 1.0.0 -> 1.1.0
-    versionIncrementer("incrementMinor")
-    // Adds branch names to snapshots. e.g. 1.0.0-feature-SW-000-exion-release-plugin-SNAPSHOT
+    versionIncrementer(incrementer)
+    // Adds branch names to snapshots
     branchVersionCreator.putAll(
         mapOf(
             "feature/.*" to "versionWithBranch",

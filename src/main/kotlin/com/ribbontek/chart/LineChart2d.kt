@@ -1,6 +1,6 @@
 package com.ribbontek.chart
 
-import com.ribbontek.style.Colors
+import com.ribbontek.util.Colors
 import com.ribbontek.util.countDigits
 import java.awt.BasicStroke
 import java.awt.Color

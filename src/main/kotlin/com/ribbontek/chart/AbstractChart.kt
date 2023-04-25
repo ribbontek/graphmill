@@ -53,7 +53,6 @@ abstract class AbstractChart<T : DataSet> : ChartValidator {
         ImageIO.write(this, "jpg", file)
     }
 
-    // TODO: Look at using this method for enhancing performance & quality inside the actual chart code
     private fun BufferedImage.toFileGpuEnhanced(directory: String, fileName: String) {
         val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
         val gc: GraphicsConfiguration = ge.defaultScreenDevice.defaultConfiguration

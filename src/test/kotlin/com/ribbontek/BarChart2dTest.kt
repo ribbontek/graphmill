@@ -1,8 +1,8 @@
 package com.ribbontek
 
 import com.ribbontek.chart.BarChart2d
-import com.ribbontek.style.Colors
 import com.ribbontek.util.BarDataSetFactory
+import com.ribbontek.util.Colors
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 

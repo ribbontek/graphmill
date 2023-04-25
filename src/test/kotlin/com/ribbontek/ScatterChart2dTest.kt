@@ -1,7 +1,7 @@
 package com.ribbontek
 
 import com.ribbontek.chart.ScatterChart2d
-import com.ribbontek.style.Colors
+import com.ribbontek.util.Colors
 import com.ribbontek.util.ScatterDataSetFactory
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

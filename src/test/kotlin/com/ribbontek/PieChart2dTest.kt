@@ -1,7 +1,7 @@
 package com.ribbontek
 
 import com.ribbontek.chart.PieChart2d
-import com.ribbontek.style.Colors
+import com.ribbontek.util.Colors
 import com.ribbontek.util.PieDataSetFactory
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

@@ -1,6 +1,6 @@
 package com.ribbontek.chart
 
-import com.ribbontek.style.Colors
+import com.ribbontek.util.Colors
 import com.ribbontek.util.countDigits
 import java.awt.BasicStroke
 import java.awt.Color
@@ -183,28 +183,7 @@ class ScatterChart2d(
         val yZeroStart = marginHeight + scatterChartHeight -
             ((scatterChartHeight / segmentDisplay.yNumbers.size) * yPosZeroIndex) - 1.5
 
-        // EXAMPLE ZERO POSITION DOT - TEST POSITIONING
-        color = Color.BLUE
-        fill(Ellipse2D.Double(xZeroStart, yZeroStart, 3.0, 3.0))
-        listOf(
-            ScatterDataSet.Coordinate(x = 10.0, y = 15.0),
-            ScatterDataSet.Coordinate(x = -50.0, y = -20.0)
-        ).forEach { coordinate ->
-            val xPos = (coordinate.x / xRange) * distance
-            val yPos = (coordinate.y / yRange) * distance
-            println("data: $coordinate, xPos: $xPos, yPos: $yPos")
-
-            val ellipse = Ellipse2D.Double(
-                xZeroStart + xPos,
-                yZeroStart - yPos,
-                3.0,
-                3.0
-            )
-            fill(ellipse)
-        }
-
         dataSet.forEach { scatterSet ->
-            println(scatterSet)
             scatterSet.data.forEach { coordinate ->
                 color = Colors.getColor(scatterSet.color)
 

@@ -1,4 +1,4 @@
-package com.ribbontek.style
+package com.ribbontek.util
 
 import java.awt.Color
 

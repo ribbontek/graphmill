@@ -1,7 +1,6 @@
 package com.ribbontek.util
 
 import com.ribbontek.chart.ScatterDataSet
-import com.ribbontek.style.Colors
 
 object ScatterDataSetFactory {
     fun scatterDataSet(
