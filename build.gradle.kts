@@ -5,10 +5,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.7.10"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
-    id("pl.allegro.tech.build.axion-release") version "1.14.2"
+    id("pl.allegro.tech.build.axion-release") version "1.15.0"
 }
 
 group = "com.ribbontek"
+project.version = scmVersion.version
 
 repositories {
     mavenCentral()
