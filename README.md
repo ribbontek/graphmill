@@ -28,3 +28,17 @@ An experimental & simple charting library that creates 2d charts using Kotlin wi
 ```shell
 ./gradlew ktlintFormat
 ```
+
+## Version the Project with Axion
+
+Tagging a new release (ensure to have appropriate permissions in GitHub)
+
+```shell
+./gradlew release -Prelease.disableChecks
+```
+
+Use the `-Prelease.scope` flag to indicate incremental level, i.e. `-Prelease.scope=incrementMajor` for a major release
+
+Test it out locally with `-Prelease.dryRun`
+
+Versioning starts from `1.0.0` by default

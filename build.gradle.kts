@@ -83,7 +83,7 @@ scmVersion {
         initialVersion { _, _ -> "1.0.0" }
     }
     // Example options to pass-through: incrementPatch, incrementMinor, incrementMajor (PredefinedVersionIncrementer)
-    val incrementer: String = project.findProperty("VERSION_INCREMENTER")?.toString() ?: "incrementMinor"
+    val incrementer: String = project.findProperty("release.scope")?.toString() ?: "incrementMinor"
     // Use minor, not patch by default. e.g. 1.0.0 -> 1.1.0
     versionIncrementer(incrementer)
     // Adds branch names to snapshots
